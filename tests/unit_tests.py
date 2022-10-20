@@ -29,6 +29,3 @@ class TestAnagrams(unittest.TestCase):
     def test_of_reverse_word_with_rules(self):
         self.assertEqual(anagrams.reverse_word_with_rules("x!x"), ['x', '!', 'x'])
 
-
-if __name__ == '__main__':
-    unittest.main()
