@@ -28,11 +28,12 @@ def reverse_word_with_rules(word: str) -> list:
 
 def reverse_word(word: str) -> str:
     """this function return word in reverse in the selected rules"""
-    assert type(word) == str, "you wrote wrong type of arg, allowable: str"
+    if not isinstance(word, str):
+        raise TypeError("you wrote wrong type of arg, allowable: str")
     #  if the word have anything number or symbol
     if check_in_the_rules(word):
         return ''.join(reverse_word_with_rules(word))
-    else:  # if the word doesn't haА у а уve anything number or symbol
+    else:  # if the word doesn't have anything number or symbol
         return ''.join(list(word)[::-1])
 
 
@@ -41,12 +42,13 @@ def text_reverse(string: str) -> str:
     function for reverse text and which leaves symbols and numbers in their place
     :return str, function always return string, not depended on argument
     """
-    assert type(string) is str or type(string) is float or type(string) is int,\
-        "you wrote wrong type of arg, allowable: str, int, float"
+    if not isinstance(string, str):
+        raise TypeError("you wrote wrong type of arg, allowable: str")
 
     # getting list of word, with separator " " - space | exp: 'hello world' -> ['hello', 'world']
-    if type(string) == str:
+    if isinstance(string, str):
         return ' '.join([reverse_word(word) for word in string.split(' ')])
-    elif type(string) == int or type(string) == float:
-        return ' '.join([reverse_word(word) for word in str(string).split(' ')])
 
+
+if __name__ == '__main__':
+    pass  # pragma: no cover

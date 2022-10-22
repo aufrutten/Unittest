@@ -3,27 +3,6 @@ import unittest
 import anagrams
 import random
 
-typical_behavior = (
-    ("abcd efgh", "dcba hgfe"),
-    ("a1bcd efg!h", "d1cba hgf!e"),
-    ("", ""),
-    ("a1bcd  efg!h", "d1cba  hgf!e"),
-    ("   ", "   "),
-    ("Hello World!", "olleH dlroW!"),
-    ("!Hello World", "!olleH dlroW"),
-    ("x!x", "x!x"),
-    ("pyth123@on", "noht123@yp"),
-    ("ab123", "ba123"),
-    ("12312 12312", "12312 12312")
-)
-
-atypical_behavior = (
-    (123, "123"),
-    (3.1415, "3.1415"),
-    ([], '3.1415'),
-    ({}, "Hello World"),
-)
-
 
 def gen_of_word(len_of_word):
 
@@ -55,16 +34,35 @@ class TestAnagrams(unittest.TestCase):
     def test_of_text_reverse(self) -> None:
         """function 'text_reverse' always return string, nothing more"""
 
+        typical_behavior = (
+            ("abcd efgh", "dcba hgfe"),
+            ("a1bcd efg!h", "d1cba hgf!e"),
+            ("", ""),
+            ("a1bcd  efg!h", "d1cba  hgf!e"),
+            ("   ", "   "),
+            ("Hello World!", "olleH dlroW!"),
+            ("!Hello World", "!olleH dlroW"),
+            ("x!x", "x!x"),
+            ("pyth123@on", "noht123@yp"),
+            ("ab123", "ba123"),
+            ("12312 12312", "12312 12312")
+        )
+
+        atypical_behavior = (
+            (123, "123"),
+            (3.1415, "3.1415"),
+            ([], '3.1415'),
+            ({}, "Hello World"),
+        )
+
         for input_text, output_text in typical_behavior:
             self.assertEqual(anagrams.text_reverse(input_text), output_text, msg=f'text_reverse: {input_text}')
 
         for input_text, output_text in atypical_behavior:
-            try:
-                self.assertEqual(anagrams.text_reverse(input_text), output_text, msg=f'text_reverse: {input_text}')
-            except AssertionError:
-                pass
+            with self.assertRaises(TypeError):
+                anagrams.text_reverse(input_text)
 
-        for string in generator_of_text(1000, 4, 2, 1):
+        for string in generator_of_text(1000, 10, 5, 1):
             double_call_function = anagrams.text_reverse(
                 anagrams.text_reverse(string)
             )
@@ -72,6 +70,8 @@ class TestAnagrams(unittest.TestCase):
 
     def test_of_reverse_word(self):
         self.assertEqual(anagrams.reverse_word('pyth123@on'), 'noht123@yp', msg='reverse_word: "pyth123@on"')
+        with self.assertRaises(TypeError):
+            anagrams.reverse_word({})
 
     def test_of_reverse_word_with_rules(self):
         self.assertEqual(anagrams.reverse_word_with_rules("x!x"), ['x', '!', 'x'])
