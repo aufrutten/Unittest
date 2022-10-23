@@ -2,8 +2,11 @@ __author__ = 'Semykopenko Ihor'
 __version__ = 4
 __status_of_task__ = 'Done'
 
+__all__ = ['text_reverse', 'reverse_word', 'reverse_word_with_rules', 'alphabet', 'numbers', 'symbols']
 
-rules = '0123456789' + '§±!@#$%^&*()-=_+[]{}\'"\\:;,./<>?'
+numbers = '0123456789'
+symbols = '§±!@#$%^&*()-=_+[]{}\'"\\:;,./<>?'
+rules = numbers + symbols
 alphabet = [chr(letter) for letter in range(97, 123)] + [chr(letter) for letter in range(65, 91)]
 
 
@@ -23,39 +26,29 @@ def reverse_word_with_rules(word: str) -> list:
     return result
 
 
-def reverse_word(rawWord: str) -> str:
+def reverse_word(word: str) -> str:
     """this function return word in reverse in the selected rules"""
+    if not isinstance(word, str):
+        raise TypeError("you wrote wrong type of arg, allowable: str")
     #  if the word have anything number or symbol
-    if check_in_the_rules(word=rawWord):
-        return ''.join(reverse_word_with_rules(word=rawWord))
+    if check_in_the_rules(word):
+        return ''.join(reverse_word_with_rules(word))
     else:  # if the word doesn't have anything number or symbol
-        return ''.join(list(rawWord)[::-1])
+        return ''.join(list(word)[::-1])
 
 
-def text_reverse(Text: str):
-    """function for reverse text and which leaves symbols and numbers in their place"""
+def text_reverse(string: str) -> str:
+    """
+    function for reverse text and which leaves symbols and numbers in their place
+    :return str, function always return string, not depended on argument
+    """
+    if not isinstance(string, str):
+        raise TypeError("you wrote wrong type of arg, allowable: str")
+
     # getting list of word, with separator " " - space | exp: 'hello world' -> ['hello', 'world']
-    return ' '.join([reverse_word(word) for word in Text.split(' ')])
+    if isinstance(string, str):
+        return ' '.join([reverse_word(word) for word in string.split(' ')])
 
 
 if __name__ == '__main__':
-
-    cases = [
-        ("abcd efgh", "dcba hgfe"),
-        ("a1bcd efg!h", "d1cba hgf!e"),
-        ("", ""),
-
-        # <-- My additions -->
-        ("a1bcd  efg!h", "d1cba  hgf!e"),  # I have two "space" in the text
-        ("   ", "   "),
-        ("Hello World!", "olleH dlroW!"),
-        ("!Hello World", "!olleH dlroW"),
-        ("x!x", "x!x"),
-        ("pyth123@on", "noht123@yp"),
-        ("ab123", "ba123")
-
-    ]
-
-    for text, reversed_text in cases:
-        assert text_reverse(text) == reversed_text
-
+    pass  # pragma: no cover
